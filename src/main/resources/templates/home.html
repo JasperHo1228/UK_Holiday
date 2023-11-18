@@ -16,19 +16,19 @@
             <form th:action="@{/homepage/filter}" method="get" style="text-align:center" onsubmit="validDate()">
 
                 <a th:href = "@{/homepage/all}"
-                   class = "btn btn-info"
-                   id = "all"
+                   class = "btn-color"
+                   id = "getAllbtn"
                    style="text-align:left"> See All Data </a>
 
                 <input type="date" id="filter_start" th:name="startDate" placeholder="Start Date" required>
 
                 <input type="date" id="filter_end" th:name="endDate" placeholder="End Date" required>
 
-                <button type="submit" class = "btn btn-secondary" style="text-align:right">Search</button>
+                <button type="submit" class = "btn-color2" style="text-align:right">Search</button>
             </form>
         </div>
-
-        <table class="table table-dark table-hover">
+     <div class="table-wrapper">
+        <table class="fl-table">
             <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -46,9 +46,9 @@
             <tbody>
             </tbody>
         </table>
-
-        <div th:if ="${total_Page > 1}">
-            <nav aria-label="Page navigation example">
+     </div>
+        <div th:if ="${total_Page > 1}" class="Page-navigation-example">
+            <nav aria-label="Page-navigation-example">
                 <ul class="pagination justify-content-end">
                     <a th:if = "${curr_Page > 1}"
                        class = "page-link" th:href="@{'/homepage/'+ ${1}}">
@@ -81,10 +81,6 @@
                             </li>
                         </th:block>
                     </th:block>
-
-
-
-
 
                     <li class = "page-item">
                         <a class="page-link" th:if = "${curr_Page < total_Page}" aria-label="Next"
