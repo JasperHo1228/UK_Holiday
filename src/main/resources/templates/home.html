@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>UK Holiday Checking</title>
+    <link rel="stylesheet" th:href="@{/holiday.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class = "container">
+        <h1 style="text-align:center"> UK Holiday Checking 2020-2025</h1>
+        <div class="data-input">
+            <form th:action="@{/homepage/filter}" method="get" style="text-align:center" onsubmit="validDate()">
+
+                <a th:href = "@{/homepage/all}"
+                   class = "btn btn-info"
+                   id = "all"
+                   style="text-align:left"> See All Data </a>
+
+                <input type="date" id="filter_start" th:name="startDate" placeholder="Start Date" required>
+
+                <input type="date" id="filter_end" th:name="endDate" placeholder="End Date" required>
+
+                <button type="submit" class = "btn btn-secondary" style="text-align:right">Search</button>
+            </form>
+        </div>
+
+        <table class="table table-dark table-hover">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">TITLE</th>
+                <th scope="col">DATE</th>
+                <th scope="col">Note</th>
+            </tr>
+            </thead>
+            <tr th:each = "data: ${allData}">
+                <td th:text = "${data.id}" ></td>
+                <td th:text = "${data.title}"></td>
+                <td th:text = "${data.date}"></td>
+                <td th:text = "${data.notes}"></td>
+            </tr>
+            <tbody>
+            </tbody>
+        </table>
+
+        <div th:if ="${total_Page > 1}">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <a th:if = "${curr_Page > 1}"
+                       class = "page-link" th:href="@{'/homepage/'+ ${1}}">
+                        <span aria-hidden="true">First</span>
+                    </a>
+
+                    <!-- previous arrow == previous page-->
+                    <li class = "page-item">
+                        <a class="page-link" aria-label="Previous" th:if = "${curr_Page > 1}"
+                           th:href = "@{'/homepage/'+ ${curr_Page-1}}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <th:block th:if="${total_Page >= 6}">
+                        <th:block th:if="${curr_Page<=5}">
+                            <li class="page-item" th:each = "i: ${#numbers.sequence(1,5)}"
+                                th:classappend="${curr_Page == i}? 'active':''">
+                                <a class="page-link"  th:href="@{'/homepage/'+${i}}">
+                                    [[${i}]]
+                                </a>
+                            </li>
+                        </th:block>
+
+                        <th:block th:if="${curr_Page > 5}">
+                            <li class="page-item" th:each="i :${#numbers.sequence(6,total_Page)}" th:classappend="${curr_Page == i}? 'active':''">
+                                <a class="page-link" th:href="@{'/homepage/'+${i}}">
+                                    [[${i}]]
+                                </a>
+                            </li>
+                        </th:block>
+                    </th:block>
+
+
+
+
+
+                    <li class = "page-item">
+                        <a class="page-link" th:if = "${curr_Page < total_Page}" aria-label="Next"
+                           th:href = "@{'/homepage/'+ ${curr_Page+1}}">
+                            <span aria-hidden="true" style="text-align:right">&raquo;</span>
+                        </a>
+                    </li>
+
+                    <a class = "page-link"
+                       th:if="${total_Page > curr_Page}"
+                       th:href="@{'/homepage/'+ ${total_Page}}">
+                        <span aria-hidden="true"> Last</span>
+                    </a>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    </div>
+</body>
+
+<script>
+    function validDate(){
+       const startDate = document.getElementById("filter_start").value;
+       const endDate = document.getElementById("filter_end").value;
+       if(startDate>endDate){
+            alert("Start Date should be before the end date")
+            return false;
+       }
+       return true;
+    }
+</script>
+</html>
